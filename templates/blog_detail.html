@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Blog Details</h1>
+
+    <div>
+        <img src="{{ blog.imageURL }}" alt="">
+        <p>Author: {{ blog.author }}</p>
+        <p>Title: {{ blog.title }}</p>
+        <p>Likes: {{ blog.likes.count }}</p>
+        <p>Dislikes: {{ blog.dislike.count }}</p>
+        <p>View: {{ blog.view }}</p>
+        <p>Description: {{ blog.description }}</p>
+    </div>
+    
+
+    <h1>Leave a comment</h1>
+
+    <hr>
+
+    <div>
+        <p id="reply_box" style="display: none;">Reply text</p>
+    </div>
+    <form action="{% url 'create_comment' blog.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="reply" id="reply_input">
+        <input type="text" name="text">
+        <button>Create</button>
+    </form>
+
+    <h3>Comments</h3>
+
+    {% for comment in comments %}
+
+    <div>
+        <p>user: {{ comment.user }} <strong ondblclick="reply('{{ comment.text }}',{{ comment.id }})"
+             style="cursor: pointer;">reply</strong></p>
+        <p>text: {{ comment.text }}</p>
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
+
+</body>
+
+<script>
+    function reply(comment_text,comment_id){
+        console.log("rerere")
+        r = document.getElementById('reply_box')
+        document.getElementById("reply_input").value = comment_id
+        r.style.display = 'block'
+        r.innerHTML = comment_text
+    }
+</script>
+
+</html>
